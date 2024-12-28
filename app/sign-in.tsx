@@ -10,7 +10,8 @@ import {
 } from "react-native";
 
 import { login } from "@/lib/appwrite";
-import { Redirect } from "expo-router";
+import { useRouter } from "expo-router";
+import { useEffect } from "react";
 import { useGlobalContext } from "@/lib/global-provider";
 import icons from "@/constants/icons";
 import images from "@/constants/images";
@@ -18,7 +19,13 @@ import images from "@/constants/images";
 const Auth = () => {
   const { refetch, loading, isLogged } = useGlobalContext();
 
-  if (!loading && isLogged) return <Redirect href="/" />;
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && isLogged) {
+      router.push("/");
+    }
+  }, [loading, isLogged]);
 
   const handleLogin = async () => {
     const result = await login();
